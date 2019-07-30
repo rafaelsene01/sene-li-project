@@ -115,12 +115,12 @@ describe('User', () => {
 
       const login = await request(app)
         .post('/sessions')
-        .send({ email: user.email, password: user.password });
+        .send({ email: userTwo.email, password: userTwo.password });
 
       const response = await request(app)
         .put('/users')
         .set('Authorization', `Bearer ${login.body.token}`)
-        .send({ name: user.name, email: userTwo.email });
+        .send({ name: userTwo.name, email: user.email });
 
       expect(response.status).toBe(400);
     });
