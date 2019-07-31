@@ -12,7 +12,7 @@ describe('Session', () => {
 
     it('must pass all data', async () => {
       const user = await request(app)
-        .post('/sessions')
+        .post('/new/sessions')
         .send({});
 
       expect(user.status).toBe(400);
@@ -22,11 +22,11 @@ describe('Session', () => {
       const user = await factory.attrs('User');
 
       await request(app)
-        .post('/users')
+        .post('/new/users')
         .send(user);
 
       const response = await request(app)
-        .post('/sessions')
+        .post('/new/sessions')
         .send({ email: user.email, password: user.password });
 
       expect(response.body).toHaveProperty('token');
@@ -36,7 +36,7 @@ describe('Session', () => {
       const user = await factory.attrs('User');
 
       const response = await request(app)
-        .post('/sessions')
+        .post('/new/sessions')
         .send({ email: user.email, password: user.password });
 
       expect(response.status).toBe(401);
@@ -46,11 +46,11 @@ describe('Session', () => {
       const user = await factory.attrs('User');
 
       await request(app)
-        .post('/users')
+        .post('/new/users')
         .send(user);
 
       const response = await request(app)
-        .post('/sessions')
+        .post('/new/sessions')
         .send({ email: user.email, password: '000000' });
 
       expect(response.status).toBe(401);

@@ -25,7 +25,7 @@ describe('User', () => {
       const user = await factory.attrs('User');
 
       const response = await request(app)
-        .post('/users')
+        .post('/new/users')
         .send(user);
 
       expect(response.body).toHaveProperty('id');
@@ -35,11 +35,11 @@ describe('User', () => {
       const user = await factory.attrs('User');
 
       await request(app)
-        .post('/users')
+        .post('/new/users')
         .send(user);
 
       const response = await request(app)
-        .post('/users')
+        .post('/new/users')
         .send(user);
 
       expect(response.status).toBe(400);
@@ -47,7 +47,7 @@ describe('User', () => {
 
     it('must pass all data', async () => {
       const user = await request(app)
-        .post('/users')
+        .post('/new/users')
         .send({});
 
       expect(user.status).toBe(400);
@@ -63,15 +63,15 @@ describe('User', () => {
       const user = await factory.attrs('User');
 
       await request(app)
-        .post('/users')
+        .post('/new/users')
         .send(user);
 
       const login = await request(app)
-        .post('/sessions')
+        .post('/new/sessions')
         .send({ email: user.email, password: user.password });
 
       const response = await request(app)
-        .put('/users')
+        .put('/edit/users')
         .set('Authorization', `Bearer ${login.body.token}`)
         .send({ name: 'Teste name', email: user.email });
 
@@ -82,15 +82,15 @@ describe('User', () => {
       const user = await factory.attrs('User');
 
       await request(app)
-        .post('/users')
+        .post('/new/users')
         .send(user);
 
       const login = await request(app)
-        .post('/sessions')
+        .post('/new/sessions')
         .send({ email: user.email, password: user.password });
 
       const response = await request(app)
-        .put('/users')
+        .put('/edit/users')
         .set('Authorization', `Bearer ${login.body.token}`)
         .send({});
 
@@ -106,19 +106,19 @@ describe('User', () => {
       const userTwo = await factory.attrs('User');
 
       await request(app)
-        .post('/users')
+        .post('/new/users')
         .send(user);
 
       await request(app)
-        .post('/users')
+        .post('/new/users')
         .send(userTwo);
 
       const login = await request(app)
-        .post('/sessions')
+        .post('/new/sessions')
         .send({ email: userTwo.email, password: userTwo.password });
 
       const response = await request(app)
-        .put('/users')
+        .put('/edit/users')
         .set('Authorization', `Bearer ${login.body.token}`)
         .send({ name: userTwo.name, email: user.email });
 
@@ -129,15 +129,15 @@ describe('User', () => {
       const user = await factory.attrs('User');
 
       await request(app)
-        .post('/users')
+        .post('/new/users')
         .send(user);
 
       const login = await request(app)
-        .post('/sessions')
+        .post('/new/sessions')
         .send({ email: user.email, password: user.password });
 
       const response = await request(app)
-        .put('/users')
+        .put('/edit/users')
         .set('Authorization', `Bearer ${login.body.token}`)
         .send({
           name: user.name,
@@ -154,11 +154,11 @@ describe('User', () => {
       const user = await factory.attrs('User');
 
       await request(app)
-        .post('/users')
+        .post('/new/users')
         .send(user);
 
       const response = await request(app)
-        .put('/users')
+        .put('/edit/users')
         .send({
           name: user.name,
           email: user.email,
@@ -174,11 +174,11 @@ describe('User', () => {
       const user = await factory.attrs('User');
 
       await request(app)
-        .post('/users')
+        .post('/new/users')
         .send(user);
 
       const response = await request(app)
-        .put('/users')
+        .put('/edit/users')
         .set('Authorization', `Bearer tokenInvalido`)
         .send({
           name: user.name,
