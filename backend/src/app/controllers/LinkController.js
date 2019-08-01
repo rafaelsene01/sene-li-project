@@ -1,5 +1,6 @@
 import * as Yup from 'yup';
 import Link from '../models/Link';
+import Accesse from '../models/Accesse';
 
 class LinkController {
   async store(req, res) {
@@ -54,7 +55,11 @@ class LinkController {
     if (!link) {
       return res.status(400).json({ error: 'Link does not exist.' });
     }
-    const { redirect_url } = link;
+    const { id: link_id, user_id, redirect_url } = link;
+
+    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+
+    Accesse.create({ link_id, user_id, ip });
 
     return res.json({ redirect_url });
   }
