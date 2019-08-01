@@ -8,7 +8,7 @@ import authMiddleware from './app/middlewares/auth';
 
 const routes = new Router();
 
-routes.get('/', (req, res) => res.json({ message: 'Hello World' }));
+routes.get('/:link', LinkController.show);
 
 routes.post('/new/users', UserController.store);
 routes.post('/new/sessions', SessionController.store);
@@ -18,5 +18,6 @@ routes.use(authMiddleware);
 routes.put('/edit/users', UserController.update);
 
 routes.post('/new/link', LinkController.store);
+routes.get('/all/link', LinkController.index);
 
 export default routes;

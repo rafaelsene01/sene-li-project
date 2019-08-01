@@ -48,5 +48,89 @@ describe('Link', () => {
 
       expect(response.status).toBe(200);
     });
+
+    it('checking link listing', async () => {
+      const user = await factory.attrs('User');
+      const link = await factory.attrs('Link');
+
+      await request(app)
+        .post('/new/users')
+        .send(user);
+
+      const login = await request(app)
+        .post('/new/sessions')
+        .send({ email: user.email, password: user.password });
+
+      await request(app)
+        .post('/new/link')
+        .set('Authorization', `Bearer ${login.body.token}`)
+        .send(link);
+
+      const response = await request(app)
+        .get('/all/link')
+        .set('Authorization', `Bearer ${login.body.token}`)
+        .send();
+
+      expect(response.status).toBe(200);
+    });
+
+    it('should not be able to register with duplicated url', async () => {
+      const user = await factory.attrs('User');
+      const link = await factory.attrs('Link');
+
+      await request(app)
+        .post('/new/users')
+        .send(user);
+
+      const login = await request(app)
+        .post('/new/sessions')
+        .send({ email: user.email, password: user.password });
+
+      await request(app)
+        .post('/new/link')
+        .set('Authorization', `Bearer ${login.body.token}`)
+        .send(link);
+
+      const response = await request(app)
+        .post('/new/link')
+        .set('Authorization', `Bearer ${login.body.token}`)
+        .send(link);
+
+      expect(response.status).toBe(400);
+    });
+
+    it("checking if link doesn't exist", async () => {
+      const link = await factory.attrs('Link');
+
+      const response = await request(app)
+        .get(`/${link.url}`)
+        .send();
+
+      expect(response.status).toBe(400);
+    });
+
+    it('checking return of an existing link', async () => {
+      const user = await factory.attrs('User');
+      const link = await factory.attrs('Link');
+
+      await request(app)
+        .post('/new/users')
+        .send(user);
+
+      const login = await request(app)
+        .post('/new/sessions')
+        .send({ email: user.email, password: user.password });
+
+      await request(app)
+        .post('/new/link')
+        .set('Authorization', `Bearer ${login.body.token}`)
+        .send(link);
+
+      const response = await request(app)
+        .get(`/${link.url}`)
+        .send();
+
+      expect(response.body).toHaveProperty('redirect_url');
+    });
   });
 });
