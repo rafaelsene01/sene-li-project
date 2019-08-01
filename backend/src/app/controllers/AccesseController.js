@@ -1,5 +1,7 @@
 import Accesse from '../models/Accesse';
 
+// code is working but access testing is in trouble, apparently has to do with my custom attributes part
+
 class AccesseController {
   async show(req, res) {
     const accesse = await Accesse.findAll({
@@ -20,14 +22,10 @@ class AccesseController {
       limit: 5,
     });
 
-    if (!accesse) {
-      return res.status(400).json({ error: 'there is no access' });
-    }
-
-    const labels = accesse.map(label => label.dataValues.date);
-    labels.reverse();
-    const data = accesse.map(label => label.dataValues.count);
-    data.reverse();
+    const labels = await accesse.map(label => label.dataValues.date);
+    await labels.reverse();
+    const data = await accesse.map(label => label.dataValues.count);
+    await data.reverse();
 
     return res.json({ labels, data });
   }
