@@ -2,7 +2,9 @@ import styled from 'styled-components';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { darken } from 'polished';
 
-export const Container = styled.div``;
+export const Container = styled.div`
+  height: 80vh;
+`;
 
 export const NewLink = styled.div`
   display: flex;
@@ -58,16 +60,50 @@ export const NewLink = styled.div`
   }
 `;
 
-export const Scroll = styled(PerfectScrollbar)``;
+export const Body = styled.div`
+  margin: 10px 30px;
 
-export const ButtonPrev = styled.button.attrs(props => ({
-  disabled: props.page <= 1,
-}))`
-  opacity: ${props => (props.page <= 1 ? 0.3 : 1)};
+  display: flex;
+  flex: 1;
+  height: 100%;
 `;
 
-export const ButtonNext = styled.button.attrs(props => ({
-  disabled: props.meetUps < 9,
-}))`
-  opacity: ${props => (props.meetUps < 9 ? 0.3 : 1)};
+export const Links = styled.button`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  background: none !important;
+  border: none;
+  border-top: 1px solid #999;
+  padding: 10px;
+`;
+
+export const Graph = styled.div`
+  padding: 0 10px;
+  flex-direction: column;
+
+  display: flex;
+  flex: 1;
+  height: 100%;
+
+  p {
+    margin: 5px 0;
+  }
+
+  button {
+    background: none !important;
+    border: none;
+  }
+
+  button:hover {
+    border: 1px solid green;
+  }
+  span {
+    cursor: copy;
+  }
+`;
+
+export const Scroll = styled(PerfectScrollbar)`
+  min-width: 200px;
 `;
